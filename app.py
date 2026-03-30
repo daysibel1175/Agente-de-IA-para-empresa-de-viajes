@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import tempfile
 from pathlib import Path
 from typing import TypedDict
 
@@ -58,6 +59,25 @@ def _resolve_pdf_dir() -> Path:
     return pdf_dir
 
 
+def _get_index_dir() -> Path:
+    """Devuelve una ruta segura para FAISS (evita problemas con rutas Unicode en Windows)."""
+    configured = os.getenv("FAISS_INDEX_DIR")
+    if configured:
+        index_dir = Path(configured)
+        if not index_dir.is_absolute():
+            index_dir = (PROJECT_ROOT / index_dir).resolve()
+        return index_dir
+
+    # Intento ruta del proyecto
+    try:
+        str(INDEX_DIR).encode("ascii")
+        return INDEX_DIR
+    except UnicodeEncodeError:
+        # Fallback para Windows/FAISS cuando el path contiene caracteres no ASCII
+        base_temp = Path(os.getenv("LOCALAPPDATA", tempfile.gettempdir()))
+        return base_temp / "agente_ia_viajes" / "faiss_index"
+
+
 def _load_documents(pdf_dir: Path):
     pdf_files = sorted(pdf_dir.glob("*.pdf"))
     if not pdf_files:
@@ -71,12 +91,13 @@ def _load_documents(pdf_dir: Path):
 
 
 def _build_or_load_vectorstore(embeddings: GoogleGenerativeAIEmbeddings, rebuild: bool = False):
-    index_faiss = INDEX_DIR / "index.faiss"
-    index_pkl = INDEX_DIR / "index.pkl"
+    index_dir = _get_index_dir()
+    index_faiss = index_dir / "index.faiss"
+    index_pkl = index_dir / "index.pkl"
 
     if not rebuild and index_faiss.exists() and index_pkl.exists():
         return FAISS.load_local(
-            str(INDEX_DIR),
+            str(index_dir),
             embeddings,
             allow_dangerous_deserialization=True,
         )
@@ -92,40 +113,54 @@ def _build_or_load_vectorstore(embeddings: GoogleGenerativeAIEmbeddings, rebuild
     chunks = splitter.split_documents(documents)
 
     vectorstore = FAISS.from_documents(chunks, embeddings)
-    INDEX_DIR.mkdir(parents=True, exist_ok=True)
-    vectorstore.save_local(str(INDEX_DIR))
+    index_dir.mkdir(parents=True, exist_ok=True)
+    vectorstore.save_local(str(index_dir))
     return vectorstore
 
 
-def _build_embeddings_with_fallback(google_api_key: str | None) -> GoogleGenerativeAIEmbeddings:
-    try:
-        # Intento usar el modelo más reciente
-        embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/text-embedding-004",
-            google_api_key=google_api_key,
-        )
-        # Prueba rápida para validar disponibilidad del modelo
-        embeddings.embed_query("test")
-        return embeddings
-    except Exception as e:
-        # Fallback a modelo más compatible
-        print(f"Aviso: text-embedding-004 no está disponible, usando embedding-001. Error: {e}")
-        return GoogleGenerativeAIEmbeddings(
-            model="models/embedding-001",
-            google_api_key=google_api_key,
-        )
+def get_embeddings(google_api_key: str | None) -> GoogleGenerativeAIEmbeddings:
+    """Prueba modelos en orden y usa el primero disponible."""
+    modelos_a_probar = [
+        "models/gemini-embedding-001",
+        "models/text-embedding-004",
+        "models/embedding-001",
+        "embedding-001",
+    ]
+    errores: list[str] = []
+
+    for nombre_modelo in modelos_a_probar:
+        try:
+            embeddings = GoogleGenerativeAIEmbeddings(
+                model=nombre_modelo,
+                google_api_key=google_api_key,
+            )
+            embeddings.embed_query("test")
+            if nombre_modelo != "models/gemini-embedding-001":
+                print(f"Aviso: usando fallback de embeddings: {nombre_modelo}")
+            return embeddings
+        except Exception as e:
+            errores.append(f"{nombre_modelo}: {e}")
+            continue
+
+    raise RuntimeError(
+        "No se pudo inicializar ningún modelo de embeddings. "
+        "Revisa tu API key/permisos. Detalles: "
+        + " | ".join(errores)
+    )
 
 
 def build_agent(rebuild_index: bool = False):
     _validate_env()
     google_api_key = _get_google_api_key()
+    model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-2.0-flash",
+        model=model_name,
         temperature=0.1,
         google_api_key=google_api_key,
+        max_retries=0,
     )
-    embeddings = _build_embeddings_with_fallback(google_api_key)
+    embeddings = get_embeddings(google_api_key)
 
     vectorstore = _build_or_load_vectorstore(embeddings, rebuild=rebuild_index)
     retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
