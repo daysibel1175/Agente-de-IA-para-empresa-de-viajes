@@ -1,68 +1,83 @@
-# Agent AI Travel Agency / Agente de IA para Agência de Viagens
-Proyecto desarrollado en la imersion de Agentes de IA de Alura Latam 2026
+# Agente de IA para Agencia de Viajes (Carrarurquía)
 
-Selecciona tu idioma / Escolha seu idioma:
-- [Español (ES)](#español-es)
-- [Português (PT)](#português-pt)
+Proyecto convertido de notebook a estructura de proyecto Python, listo para subir a GitHub.
 
----
+## Qué incluye
 
-## Español (ES)
+- `app.py`: aplicación principal (RAG + LangGraph + Web con SerpAPI)
+- `requirements.txt`: dependencias del proyecto
+- `.env.example`: plantilla de variables de entorno
+- `.gitignore`: exclusiones para entorno local y cachés
+- `Agente de IA Carrarurquia/`: carpeta con los PDFs para RAG
 
-### Agente de IA para Agencia de Viajes (Carrarurquía) 🤖✈️
+## Requisitos
 
-Este proyecto implementa un agente de inteligencia artificial avanzado diseñado para una agencia de viajes especializada en turismo en Turquía. El sistema utiliza una arquitectura de **Generación Aumentada por Recuperación (RAG)** y un flujo de trabajo orquestado por **LangGraph** para responder preguntas basadas tanto en documentos internos como en búsquedas en tiempo real en la web.
+1. Python 3.10+
+2. API keys:
+	- `GEMINI_API_KEY`
+	- `SERPAPI_API_KEY`
 
-#### 🚀 Características principales
-* **Arquitectura RAG:** Extrae información precisa de reportes internos en formato PDF.
-* **Orquestación Inteligente:** Utiliza LangGraph para decidir si una consulta se resuelve con documentos locales o mediante búsqueda web (SerpAPI).
-* **Base de Datos Vectorial:** Emplea **FAISS** para el almacenamiento y búsqueda eficiente de embeddings.
-* **Multimodelo:** Configurado para trabajar con modelos de Google Generative AI (`gemini-2.0-flash` y `text-embedding-004`).
-* **Salida Formateada:** Genera respuestas automáticas en Markdown y permite exportación a PDF.
+## Instalación
 
-#### 🛠️ Tecnologías utilizadas
-* **Lenguaje:** Python
-* **Frameworks:** LangChain, LangGraph
-* **LLM & Embeddings:** Google Gemini API
-* **Vector Store:** FAISS
-* **Herramientas de búsqueda:** SerpAPI
+1. Crea y activa entorno virtual.
+2. Instala dependencias:
 
-#### 📋 Requisitos previos
-Necesitarás las siguientes API Keys configuradas en tu entorno:
-1. `GEMINI_API_KEY`: Para el acceso a los modelos de lenguaje de Google.
-2. `SERPAPI_API_KEY`: Para las búsquedas en la web.
-
-#### 🔧 Instalación
 ```bash
-pip install -q google-genai langchain-community pypdf langchain-text-splitters langchain-google-genai faiss-cpu langgraph google-search-results markdown fpdf2
+pip install -r requirements.txt
 ```
-<a name="português-pt"></a>
-## Português (PT)
 
-### Agente de IA para Agência de Viagens (Carrarurquía) 🤖✈️
+3. Crea tu `.env` a partir de `.env.example` y completa claves.
 
-Este projeto implementa um agente de inteligência artificial avançado projetado para uma agência de viagens especializada em turismo na Turquia. O sistema utiliza uma arquitetura de **Geração Aumentada por Recuperação (RAG)** e um fluxo de trabalho orquestrado pelo **LangGraph** para responder perguntas baseadas tanto em documentos internos quanto em buscas em tempo real na web.
+## Uso
 
-#### 🚀 Principais Características
-* **Arquitetura RAG:** Extrai informações precisas de relatórios internos em formato PDF.
-* **Orquestração Inteligente:** Utiliza LangGraph para decidir se uma consulta deve ser resolvida com documentos locais ou através de busca na web (SerpAPI).
-* **Banco de Dados Vetorial:** Utiliza **FAISS** para o armazenamento e busca eficiente de embeddings.
-* **Multimodelo:** Configurado para trabalhar com modelos da Google Generative AI (`gemini-2.0-flash` e `text-embedding-004`).
-* **Saída Formatada:** Gera respostas automáticas em Markdown e permite exportação para PDF.
+### Modo pregunta única
 
-#### 🛠️ Tecnologias Utilizadas
-* **Linguagem:** Python
-* **Frameworks:** LangChain, LangGraph
-* **LLM & Embeddings:** Google Gemini API
-* **Vector Store:** FAISS
-* **Ferramentas de busca:** SerpAPI
-
-#### 📋 Pré-requisitos
-Você precisará das seguintes chaves de API configuradas no seu ambiente:
-1. `GEMINI_API_KEY`: Para acessar os modelos de linguagem do Google.
-2. `SERPAPI_API_KEY`: Para realizar buscas na web.
-
-#### 🔧 Instalação
 ```bash
-pip install -q google-genai langchain-community pypdf langchain-text-splitters langchain-google-genai faiss-cpu langgraph google-search-results markdown fpdf2
+python app.py --pregunta "¿Cuál es el paquete más económico?"
+```
+
+### Modo interactivo
+
+```bash
+python app.py
+```
+
+### Chat para usuario final (Streamlit)
+
+```bash
+streamlit run streamlit_app.py
+```
+
+Luego abre la URL local que muestra Streamlit en la terminal (normalmente http://localhost:8501).
+
+## Deploy web (sin instalar nada local)
+
+Puedes desplegar en Streamlit Community Cloud:
+
+1. Sube este repositorio a GitHub.
+2. En https://share.streamlit.io crea una nueva app.
+3. Selecciona como archivo principal `streamlit_app.py`.
+4. En **App Settings > Secrets** agrega:
+
+```toml
+GEMINI_API_KEY = "tu_api_key_gemini"
+SERPAPI_API_KEY = "tu_api_key_serpapi"
+# PDF_DIR = "Agente de IA Carrarurquia"
+```
+
+Con esto, el usuario final solo abre el enlace de la app y usa el chat.
+
+### Reconstruir índice FAISS
+
+```bash
+python app.py --pregunta "test" --rebuild-index
+```
+
+## Notas
+
+- Por defecto, el proyecto toma los PDFs desde `Agente de IA Carrarurquia/`.
+- Si deseas cambiar carpeta de documentos, usa en `.env`:
+
+```env
+PDF_DIR=otra_carpeta_con_pdfs
 ```

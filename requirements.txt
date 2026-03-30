@@ -1,0 +1,12 @@
+google-genai
+langchain-community
+pypdf
+langchain-text-splitters
+langchain-google-genai
+faiss-cpu
+langgraph
+google-search-results
+markdown
+fpdf2
+python-dotenv
+streamlit
