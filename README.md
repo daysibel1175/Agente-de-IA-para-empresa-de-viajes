@@ -1,63 +1,70 @@
-# Agente de IA para Agencia de Viajes (Carrarurquía)
+# Agent AI Travel Agency / Agente de IA para Agência de Viagens
 
-Proyecto convertido de notebook a estructura de proyecto Python, listo para subir a GitHub.
+Proyecto desarrollado en la imersion de Agentes de IA de Alura Latam 2026
 
-## Qué incluye
+Selecciona tu idioma / Escolha seu idioma:
 
-- `app.py`: aplicación principal (RAG + LangGraph + Web con SerpAPI)
-- `requirements.txt`: dependencias del proyecto
-- `.env.example`: plantilla de variables de entorno
-- `.gitignore`: exclusiones para entorno local y cachés
-- `Agente de IA Carrarurquia/`: carpeta con los PDFs para RAG
+- [Español (ES)](#español-es)
+- [Português (PT)](#português-pt)
 
-## Requisitos
+---
 
-1. Python 3.10+
-2. API keys:
-	- `GEMINI_API_KEY`
-	- `SERPAPI_API_KEY`
+## Español (ES)
 
-## Instalación
+### Agente de IA para Agencia de Viajes (Carrarurquía) 🤖✈️
 
-1. Crea y activa entorno virtual.
-2. Instala dependencias:
+Este proyecto implementa un agente de inteligencia artificial avanzado diseñado para una agencia de viajes especializada en turismo en Turquía. El sistema utiliza una arquitectura de **Generación Aumentada por Recuperación (RAG)** y un flujo de trabajo orquestado por **LangGraph** para responder preguntas basadas tanto en documentos internos como en búsquedas en tiempo real en la web.
+
+#### 🚀 Características principales
+
+- **Arquitectura RAG:** Extrae información precisa de reportes internos en formato PDF.
+- **Orquestación Inteligente:** Utiliza LangGraph para decidir si una consulta se resuelve con documentos locales o mediante búsqueda web (SerpAPI).
+- **Base de Datos Vectorial:** Emplea **FAISS** para el almacenamiento y búsqueda eficiente de embeddings.
+- **Multimodelo:** Configurado para trabajar con modelos de Google Generative AI (`gemini-2.0-flash` y `text-embedding-004`).
+- **Salida Formateada:** Genera respuestas automáticas en Markdown.
+- **Interfaz de chat:** Incluye app para usuario final con Streamlit.
+
+#### 🛠️ Tecnologías utilizadas
+
+- **Lenguaje:** Python
+- **Frameworks:** LangChain, LangGraph, Streamlit
+- **LLM & Embeddings:** Google Gemini API (`langchain-google-genai`)
+- **Vector Store:** FAISS
+- **Herramientas de búsqueda:** SerpAPI
+- **Utilidades:** python-dotenv, PyPDF
+
+#### 📋 Requisitos previos
+
+Necesitarás las siguientes API Keys configuradas en tu entorno:
+
+1. `GEMINI_API_KEY` (o `GOOGLE_API_KEY`)
+2. `SERPAPI_API_KEY`
+
+#### 🔧 Instalación
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Crea tu `.env` a partir de `.env.example` y completa claves.
-
-## Uso
-
-### Modo pregunta única
+#### ▶️ Comandos de uso
 
 ```bash
-python app.py --pregunta "¿Cuál es el paquete más económico?"
-```
-
-### Modo interactivo
-
-```bash
+# 1) Ejecutar por CLI (modo interactivo)
 python app.py
-```
 
-### Chat para usuario final (Streamlit)
+# 2) Ejecutar una pregunta puntual
+python app.py --pregunta "¿Cuál es el paquete de viaje más económico?"
 
-```bash
+# 3) Reconstruir índice FAISS
+python app.py --pregunta "test" --rebuild-index
+
+# 4) Ejecutar chat para usuario final
 streamlit run streamlit_app.py
 ```
 
-Luego abre la URL local que muestra Streamlit en la terminal (normalmente http://localhost:8501).
+#### 🌐 Deploy web (Streamlit Cloud)
 
-## Deploy web (sin instalar nada local)
-
-Puedes desplegar en Streamlit Community Cloud:
-
-1. Sube este repositorio a GitHub.
-2. En https://share.streamlit.io crea una nueva app.
-3. Selecciona como archivo principal `streamlit_app.py`.
-4. En **App Settings > Secrets** agrega:
+En **App Settings > Secrets**:
 
 ```toml
 GEMINI_API_KEY = "tu_api_key_gemini"
@@ -65,19 +72,67 @@ SERPAPI_API_KEY = "tu_api_key_serpapi"
 # PDF_DIR = "Agente de IA Carrarurquia"
 ```
 
-Con esto, el usuario final solo abre el enlace de la app y usa el chat.
+<a name="português-pt"></a>
 
-### Reconstruir índice FAISS
+## Português (PT)
+
+### Agente de IA para Agência de Viagens (Carrarurquía) 🤖✈️
+
+Este projeto implementa um agente de inteligência artificial avançado projetado para uma agência de viagens especializada em turismo na Turquia. O sistema utiliza uma arquitetura de **Geração Aumentada por Recuperação (RAG)** e um fluxo de trabalho orquestrado pelo **LangGraph** para responder perguntas baseadas tanto em documentos internos quanto em buscas em tempo real na web.
+
+#### 🚀 Principais Características
+
+- **Arquitetura RAG:** Extrai informações precisas de relatórios internos em formato PDF.
+- **Orquestração Inteligente:** Utiliza LangGraph para decidir se uma consulta deve ser resolvida com documentos locais ou através de busca na web (SerpAPI).
+- **Banco de Dados Vetorial:** Utiliza **FAISS** para o armazenamento e busca eficiente de embeddings.
+- **Multimodelo:** Configurado para trabalhar com modelos da Google Generative AI (`gemini-2.0-flash` e `text-embedding-004`).
+- **Saída formatada:** Gera respostas em Markdown.
+- **Interface de chat:** Inclui app Streamlit para usuário final.
+
+#### 🛠️ Tecnologias Utilizadas
+
+- **Linguagem:** Python
+- **Frameworks:** LangChain, LangGraph, Streamlit
+- **LLM & Embeddings:** Google Gemini API (`langchain-google-genai`)
+- **Vector Store:** FAISS
+- **Ferramentas de busca:** SerpAPI
+- **Utilitários:** python-dotenv, PyPDF
+
+#### 📋 Pré-requisitos
+
+Você precisará das seguintes chaves de API configuradas no seu ambiente:
+
+1. `GEMINI_API_KEY` (ou `GOOGLE_API_KEY`)
+2. `SERPAPI_API_KEY`
+
+#### 🔧 Instalação
 
 ```bash
-python app.py --pregunta "test" --rebuild-index
+pip install -r requirements.txt
 ```
 
-## Notas
+#### ▶️ Comandos de uso
 
-- Por defecto, el proyecto toma los PDFs desde `Agente de IA Carrarurquia/`.
-- Si deseas cambiar carpeta de documentos, usa en `.env`:
+```bash
+# 1) Executar no terminal (modo interativo)
+python app.py
 
-```env
-PDF_DIR=otra_carpeta_con_pdfs
+# 2) Executar uma pergunta direta
+python app.py --pregunta "Qual é o pacote de viagem mais econômico?"
+
+# 3) Reconstruir índice FAISS
+python app.py --pregunta "test" --rebuild-index
+
+# 4) Executar chat para usuário final
+streamlit run streamlit_app.py
+```
+
+#### 🌐 Deploy web (Streamlit Cloud)
+
+Em **App Settings > Secrets**:
+
+```toml
+GEMINI_API_KEY = "sua_api_key_gemini"
+SERPAPI_API_KEY = "sua_api_key_serpapi"
+# PDF_DIR = "Agente de IA Carrarurquia"
 ```

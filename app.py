@@ -97,6 +97,25 @@ def _build_or_load_vectorstore(embeddings: GoogleGenerativeAIEmbeddings, rebuild
     return vectorstore
 
 
+def _build_embeddings_with_fallback(google_api_key: str | None) -> GoogleGenerativeAIEmbeddings:
+    try:
+        # Intento usar el modelo más reciente
+        embeddings = GoogleGenerativeAIEmbeddings(
+            model="models/text-embedding-004",
+            google_api_key=google_api_key,
+        )
+        # Prueba rápida para validar disponibilidad del modelo
+        embeddings.embed_query("test")
+        return embeddings
+    except Exception as e:
+        # Fallback a modelo más compatible
+        print(f"Aviso: text-embedding-004 no está disponible, usando embedding-001. Error: {e}")
+        return GoogleGenerativeAIEmbeddings(
+            model="models/embedding-001",
+            google_api_key=google_api_key,
+        )
+
+
 def build_agent(rebuild_index: bool = False):
     _validate_env()
     google_api_key = _get_google_api_key()
@@ -106,10 +125,8 @@ def build_agent(rebuild_index: bool = False):
         temperature=0.1,
         google_api_key=google_api_key,
     )
-    embeddings = GoogleGenerativeAIEmbeddings(
-        model="models/text-embedding-004",
-        google_api_key=google_api_key,
-    )
+    embeddings = _build_embeddings_with_fallback(google_api_key)
+
     vectorstore = _build_or_load_vectorstore(embeddings, rebuild=rebuild_index)
     retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
     web = SerpAPIWrapper()
