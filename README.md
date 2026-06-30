@@ -142,7 +142,7 @@ SERPAPI_API_KEY = "sua_api_key_serpapi"
 
 **Pregunta**
 
-> Dame dos opciones más baratas que tenga Carrarurquía.
+> Dame dos opciones más economicas que tenga Carrarurquía.
 
 **Respuesta**
 
