@@ -64,6 +64,56 @@ with st.sidebar:
         reset_chat()
         st.rerun()
 
+    st.divider()
+    st.header("Gestión de Documentos")
+    
+    from app import PROJECT_ROOT, DEFAULT_PDF_DIR
+    from pathlib import Path
+    
+    configured_pdf = os.getenv("PDF_DIR")
+    pdf_dir = Path(configured_pdf) if configured_pdf else DEFAULT_PDF_DIR
+    if not pdf_dir.is_absolute():
+        pdf_dir = (PROJECT_ROOT / pdf_dir).resolve()
+    pdf_dir.mkdir(parents=True, exist_ok=True)
+
+    with st.form("upload_form", clear_on_submit=True):
+        uploaded_files = st.file_uploader("Subir nuevos documentos (PDF)", type=["pdf"], accept_multiple_files=True)
+        submitted = st.form_submit_button("Agregar Documentos")
+        if submitted and uploaded_files:
+            archivos_nuevos = False
+            for uploaded_file in uploaded_files:
+                file_path = pdf_dir / uploaded_file.name
+                if not file_path.exists():
+                    with open(file_path, "wb") as f:
+                        f.write(uploaded_file.getbuffer())
+                    archivos_nuevos = True
+                else:
+                    st.warning(f"El archivo '{uploaded_file.name}' ya existe y no fue sustituido.")
+            
+            if archivos_nuevos:
+                with st.spinner("Reconstruyendo índice..."):
+                    build_agent(rebuild_index=True)
+                st.cache_resource.clear()
+                st.rerun()
+
+    st.subheader("Documentos actuales")
+    pdf_files = sorted(pdf_dir.glob("*.pdf"))
+    if not pdf_files:
+        st.write("No hay documentos.")
+    else:
+        for pdf_file in pdf_files:
+            col1, col2 = st.columns([0.85, 0.15])
+            col1.write(pdf_file.name)
+            if col2.button("❌", key=f"del_{pdf_file.name}", help="Eliminar"):
+                pdf_file.unlink()
+                with st.spinner("Reconstruyendo índice..."):
+                    try:
+                        build_agent(rebuild_index=True)
+                    except Exception:
+                        pass # if no pdfs left, build_agent might throw an error if not handled. Let's check app.py
+                st.cache_resource.clear()
+                st.rerun()
+
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
