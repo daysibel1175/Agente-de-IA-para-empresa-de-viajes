@@ -136,3 +136,71 @@ GEMINI_API_KEY = "sua_api_key_gemini"
 SERPAPI_API_KEY = "sua_api_key_serpapi"
 # PDF_DIR = "Agente de IA Carrarurquia"
 ```
+## 💬 Ejemplos de preguntas y respuestas
+
+### Ejemplo 1
+
+**Pregunta**
+
+> Dame dos opciones más baratas que tenga Carrarurquía.
+
+**Respuesta**
+
+**Fuente utilizada:** RAG (documentos internos)
+
+Las dos opciones más económicas disponibles son:
+
+1. **Aventura Anatolia (7 días)**
+   - Precio medio: **USD 1,954** por persona.
+   - Incluye alojamiento, traslados y guía local.
+   - Ideal para recorrer la región de Anatolia.
+
+2. **Estambul + Capadocia Esencial (8 días)**
+   - Tarifa base: **USD 2,018** por persona.
+   - Incluye alojamiento, traslados y visitas a Estambul y Capadocia.
+   - Precio correspondiente a la temporada de otoño/invierno.
+
+**Recomendación:** Los precios pueden variar según la temporada y la disponibilidad. Los vuelos internacionales no están incluidos.
+
+### Ejemplo 2
+
+**Pregunta**
+
+> ¿Cómo puedo reservar con ustedes?
+
+**Respuesta**
+
+**Fuente utilizada:** RAG (documentos internos)
+
+Para reservar un viaje con Carrarurquía, el proceso es el siguiente:
+
+1. Contactar a la agencia mediante el sitio web, correo electrónico, teléfono o WhatsApp.
+2. Indicar las fechas de viaje, destinos de interés, número de viajeros y presupuesto.
+3. Recibir una propuesta de itinerario personalizada.
+4. Revisar y solicitar los ajustes necesarios.
+5. Confirmar la reserva realizando el pago o depósito correspondiente.
+6. Recibir la documentación del viaje y recomendaciones antes de la salida.
+
+**Ventajas de reservar con Carrarurquía:**
+
+- Itinerarios personalizados.
+- Expertos en turismo en Turquía.
+- Atención antes y durante el viaje.
+- Flexibilidad para reprogramaciones según las políticas de la agencia.
+
+### Ejemplo 3
+
+**Pregunta**
+
+> ¿En qué mes del año está mejor el clima para el paquete Aventura Anatolia?
+
+**Respuesta**
+
+**Fuente utilizada:** Búsqueda web (SerpAPI)
+
+Según la información obtenida en la web, la mejor época para visitar Turquía y recorrer la región de Anatolia es durante:
+
+- **Primavera (marzo a junio):** clima templado, paisajes floridos y menor afluencia de turistas.
+- **Otoño (septiembre a noviembre):** temperaturas agradables (18 °C a 28 °C) y condiciones ideales para realizar actividades al aire libre.
+
+**Recomendación:** Si buscas el mejor equilibrio entre clima y cantidad de visitantes, los meses de **abril, mayo, septiembre y octubre** son las opciones más recomendadas.
