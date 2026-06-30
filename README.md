@@ -72,6 +72,82 @@ SERPAPI_API_KEY = "tu_api_key_serpapi"
 # PDF_DIR = "Agente de IA Carrarurquia"
 ```
 
+# Ejemplos de preguntas y respuestas
+
+## Ejemplo 1
+
+### Pregunta
+
+> Dame dos opciones más económicas que tenga Carrarurquía.
+
+### Respuesta
+
+**Fuente utilizada:** RAG (documentos internos)
+
+Las dos opciones más económicas disponibles son:
+
+#### 1. Aventura Anatolia (7 días)
+
+* Precio medio: **USD 1,954** por persona.
+* Incluye alojamiento, traslados y guía local.
+* Ideal para recorrer la región de Anatolia.
+
+#### 2. Estambul + Capadocia Esencial (8 días)
+
+* Tarifa base: **USD 2,018** por persona.
+* Incluye alojamiento, traslados y visitas a Estambul y Capadocia.
+* Precio correspondiente a la temporada de otoño/invierno.
+
+**Recomendación:** Los precios pueden variar según la temporada y la disponibilidad. Los vuelos internacionales no están incluidos.
+
+---
+
+## Ejemplo 2
+
+### Pregunta
+
+> ¿Cómo puedo reservar con ustedes?
+
+### Respuesta
+
+**Fuente utilizada:** RAG (documentos internos)
+
+Para reservar un viaje con Carrarurquía, el proceso es el siguiente:
+
+1. Contactar a la agencia mediante el sitio web, correo electrónico, teléfono o WhatsApp.
+2. Indicar las fechas del viaje, destinos de interés, número de viajeros y presupuesto.
+3. Recibir una propuesta de itinerario personalizada.
+4. Revisar la propuesta y solicitar los ajustes necesarios.
+5. Confirmar la reserva realizando el pago o depósito correspondiente.
+6. Recibir la documentación del viaje y recomendaciones antes de la salida.
+
+#### Ventajas de reservar con Carrarurquía
+
+* Itinerarios personalizados.
+* Expertos en turismo en Turquía.
+* Atención antes y durante el viaje.
+* Flexibilidad para reprogramaciones según las políticas de la agencia.
+
+---
+
+## Ejemplo 3
+
+### Pregunta
+
+> ¿En qué mes del año está mejor el clima para el paquete Aventura Anatolia?
+
+### Respuesta
+
+**Fuente utilizada:** Búsqueda web (SerpAPI)
+
+Según la información obtenida en la web, la mejor época para visitar Turquía y recorrer la región de Anatolia es durante:
+
+* **Primavera (marzo a junio):** clima templado, paisajes floridos y menor afluencia de turistas.
+* **Otoño (septiembre a noviembre):** temperaturas agradables (18 °C a 28 °C) y condiciones ideales para realizar actividades al aire libre.
+
+**Recomendación:** Si buscas el mejor equilibrio entre clima y cantidad de visitantes, los meses de **abril, mayo, septiembre y octubre** son las opciones más recomendadas.
+
+
 <a name="português-pt"></a>
 
 ## Português (PT)
@@ -136,71 +212,78 @@ GEMINI_API_KEY = "sua_api_key_gemini"
 SERPAPI_API_KEY = "sua_api_key_serpapi"
 # PDF_DIR = "Agente de IA Carrarurquia"
 ```
-## 💬 Ejemplos de preguntas y respuestas
 
-### Ejemplo 1
+# Exemplos de Perguntas e Respostas
 
-**Pregunta**
+## Exemplo 1
 
-> Dame dos opciones más economicas que tenga Carrarurquía.
+### Pergunta
 
-**Respuesta**
+> Me dê duas opções mais econômicas que a Carrarurquía possui.
 
-**Fuente utilizada:** RAG (documentos internos)
+### Resposta
 
-Las dos opciones más económicas disponibles son:
+**Fonte utilizada:** RAG (documentos internos)
 
-1. **Aventura Anatolia (7 días)**
-   - Precio medio: **USD 1,954** por persona.
-   - Incluye alojamiento, traslados y guía local.
-   - Ideal para recorrer la región de Anatolia.
+As duas opções mais econômicas disponíveis são:
 
-2. **Estambul + Capadocia Esencial (8 días)**
-   - Tarifa base: **USD 2,018** por persona.
-   - Incluye alojamiento, traslados y visitas a Estambul y Capadocia.
-   - Precio correspondiente a la temporada de otoño/invierno.
+#### 1. Aventura Anatólia (7 dias)
 
-**Recomendación:** Los precios pueden variar según la temporada y la disponibilidad. Los vuelos internacionales no están incluidos.
+* Preço médio: **USD 1.954** por pessoa.
+* Inclui hospedagem, traslados e guia local.
+* Ideal para conhecer a região da Anatólia.
 
-### Ejemplo 2
+#### 2. Istambul + Capadócia Essencial (8 dias)
 
-**Pregunta**
+* Tarifa base: **USD 2.018** por pessoa.
+* Inclui hospedagem, traslados e passeios em Istambul e Capadócia.
+* Preço referente à temporada de outono/inverno.
 
-> ¿Cómo puedo reservar con ustedes?
+**Recomendação:** Os preços podem variar conforme a temporada e a disponibilidade. Os voos internacionais não estão incluídos.
 
-**Respuesta**
+---
 
-**Fuente utilizada:** RAG (documentos internos)
+## Exemplo 2
 
-Para reservar un viaje con Carrarurquía, el proceso es el siguiente:
+### Pergunta
 
-1. Contactar a la agencia mediante el sitio web, correo electrónico, teléfono o WhatsApp.
-2. Indicar las fechas de viaje, destinos de interés, número de viajeros y presupuesto.
-3. Recibir una propuesta de itinerario personalizada.
-4. Revisar y solicitar los ajustes necesarios.
-5. Confirmar la reserva realizando el pago o depósito correspondiente.
-6. Recibir la documentación del viaje y recomendaciones antes de la salida.
+> Como posso fazer uma reserva com vocês?
 
-**Ventajas de reservar con Carrarurquía:**
+### Resposta
 
-- Itinerarios personalizados.
-- Expertos en turismo en Turquía.
-- Atención antes y durante el viaje.
-- Flexibilidad para reprogramaciones según las políticas de la agencia.
+**Fonte utilizada:** RAG (documentos internos)
 
-### Ejemplo 3
+Para reservar uma viagem com a Carrarurquía, o processo é o seguinte:
 
-**Pregunta**
+1. Entrar em contato com a agência pelo site, e-mail, telefone ou WhatsApp.
+2. Informar as datas da viagem, destinos de interesse, número de viajantes e orçamento disponível.
+3. Receber uma proposta de roteiro personalizada.
+4. Revisar a proposta e solicitar os ajustes necessários.
+5. Confirmar a reserva realizando o pagamento ou depósito.
+6. Receber a documentação da viagem e recomendações antes da partida.
 
-> ¿En qué mes del año está mejor el clima para el paquete Aventura Anatolia?
+#### Vantagens de reservar com a Carrarurquía
 
-**Respuesta**
+* Roteiros personalizados.
+* Especialistas em turismo na Turquia.
+* Atendimento antes e durante a viagem.
+* Flexibilidade para remarcações conforme as políticas da agência.
 
-**Fuente utilizada:** Búsqueda web (SerpAPI)
+---
 
-Según la información obtenida en la web, la mejor época para visitar Turquía y recorrer la región de Anatolia es durante:
+## Exemplo 3
 
-- **Primavera (marzo a junio):** clima templado, paisajes floridos y menor afluencia de turistas.
-- **Otoño (septiembre a noviembre):** temperaturas agradables (18 °C a 28 °C) y condiciones ideales para realizar actividades al aire libre.
+### Pergunta
 
-**Recomendación:** Si buscas el mejor equilibrio entre clima y cantidad de visitantes, los meses de **abril, mayo, septiembre y octubre** son las opciones más recomendadas.
+> Em qual mês do ano o clima é melhor para o pacote Aventura Anatólia?
+
+### Resposta
+
+**Fonte utilizada:** Busca na web (SerpAPI)
+
+De acordo com as informações obtidas na internet, a melhor época para visitar a Turquia e conhecer a região da Anatólia é durante:
+
+* **Primavera (março a junho):** clima ameno, paisagens floridas e menor fluxo de turistas.
+* **Outono (setembro a novembro):** temperaturas agradáveis (18°C a 28°C) e condições ideais para atividades ao ar livre.
+
+**Recomendação:** Se você busca o melhor equilíbrio entre clima e quantidade de visitantes, os meses de **abril, maio, setembro e outubro** são os mais recomendados.
