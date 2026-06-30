@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import os
-
+from pathlib import Path
 import streamlit as st
 
-from app import build_agent
+from app import build_agent, PROJECT_ROOT, DEFAULT_PDF_DIR
 
 
 st.set_page_config(page_title="Agente IA Viajes", page_icon="✈️", layout="wide")
@@ -17,7 +17,6 @@ def sync_secrets_to_env() -> None:
     try:
         secrets_dict = dict(st.secrets)
     except Exception:
-        # Si secrets.toml está ausente o mal formateado, seguimos con variables del .env
         return
 
     for key in ["GEMINI_API_KEY", "GOOGLE_API_KEY", "SERPAPI_API_KEY", "PDF_DIR"]:
@@ -51,25 +50,23 @@ def reset_chat() -> None:
     st.session_state.agent_blocked = False
 
 
+# --- SIDEBAR ---
 with st.sidebar:
     st.header("Configuración")
     st.write("Asegúrate de tener configuradas las variables en tu archivo .env.")
-    if st.button("Reconstruir índice FAISS"):
+    if st.button("🔄 Reconstruir índice FAISS"):
         with st.spinner("Reconstruyendo índice, esto puede tardar..."):
             build_agent(rebuild_index=True)
             st.success("Índice reconstruido con éxito.")
             st.cache_resource.clear()
 
-    if st.button("Limpiar chat"):
+    if st.button("🧹 Limpiar chat"):
         reset_chat()
         st.rerun()
 
     st.divider()
     st.header("Gestión de Documentos")
-    
-    from app import PROJECT_ROOT, DEFAULT_PDF_DIR
-    from pathlib import Path
-    
+
     configured_pdf = os.getenv("PDF_DIR")
     pdf_dir = Path(configured_pdf) if configured_pdf else DEFAULT_PDF_DIR
     if not pdf_dir.is_absolute():
@@ -77,8 +74,13 @@ with st.sidebar:
     pdf_dir.mkdir(parents=True, exist_ok=True)
 
     with st.form("upload_form", clear_on_submit=True):
-        uploaded_files = st.file_uploader("Subir nuevos documentos (PDF)", type=["pdf"], accept_multiple_files=True)
-        submitted = st.form_submit_button("Agregar Documentos")
+        uploaded_files = st.file_uploader(
+            "📂 Arrastra y suelta tus documentos aquí",
+            type=["pdf"],
+            accept_multiple_files=True,
+            help="Límite: 200 MB por archivo • Solo PDF"
+        )
+        submitted = st.form_submit_button("💾 Guardar y reconstruir índice")
         if submitted and uploaded_files:
             archivos_nuevos = False
             for uploaded_file in uploaded_files:
@@ -88,33 +90,36 @@ with st.sidebar:
                         f.write(uploaded_file.getbuffer())
                     archivos_nuevos = True
                 else:
-                    st.warning(f"El archivo '{uploaded_file.name}' ya existe y no fue sustituido.")
-            
+                    st.warning(f"⚠️ El archivo '{uploaded_file.name}' ya existe y no fue sustituido.")
+
             if archivos_nuevos:
                 with st.spinner("Reconstruyendo índice..."):
                     build_agent(rebuild_index=True)
                 st.cache_resource.clear()
                 st.rerun()
 
-    st.subheader("Documentos actuales")
+    st.subheader("📑 Documentos actuales")
     pdf_files = sorted(pdf_dir.glob("*.pdf"))
     if not pdf_files:
         st.write("No hay documentos.")
     else:
         for pdf_file in pdf_files:
-            col1, col2 = st.columns([0.85, 0.15])
+            col1, col2 = st.columns([0.85, 0.20])
             col1.write(pdf_file.name)
-            if col2.button("❌", key=f"del_{pdf_file.name}", help="Eliminar"):
+
+            # Botón funcional de Streamlit con emoji
+            if col2.button("🗑️", key=f"del_{pdf_file.name}"):
                 pdf_file.unlink()
                 with st.spinner("Reconstruyendo índice..."):
                     try:
                         build_agent(rebuild_index=True)
                     except Exception:
-                        pass # if no pdfs left, build_agent might throw an error if not handled. Let's check app.py
+                        pass  # si no quedan PDFs, build_agent puede fallar
                 st.cache_resource.clear()
                 st.rerun()
 
 
+# --- MAIN CHAT ---
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -125,11 +130,11 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-pregunta = st.chat_input("Escribe tu pregunta sobre viajes...")
+pregunta = st.chat_input("✍️ Escribe tu pregunta sobre viajes...")
 
 if pregunta:
     if st.session_state.agent_blocked:
-        st.warning("El agente quedó bloqueado por un error previo. Pulsa 'Limpiar chat' para reintentar.")
+        st.warning("⚠️ El agente quedó bloqueado por un error previo. Pulsa 'Limpiar chat' para reintentar.")
         st.stop()
 
     st.session_state.messages.append({"role": "user", "content": pregunta})
@@ -137,7 +142,7 @@ if pregunta:
         st.markdown(pregunta)
 
     with st.chat_message("assistant"):
-        with st.spinner("Pensando..."):
+        with st.spinner("🤔 Pensando..."):
             try:
                 agente = get_agent()
                 resultado = agente.invoke(
@@ -162,7 +167,7 @@ if pregunta:
                     }
                 )
             except Exception as exc:
-                error_msg = f"Error ejecutando el agente: {exc}\n\nReferencia API key: {api_key_ref()}"
+                error_msg = f"❌ Error ejecutando el agente: {exc}\n\nReferencia API key: {api_key_ref()}"
                 st.error(error_msg)
                 st.session_state.agent_blocked = True
                 st.session_state.messages.append(
