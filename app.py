@@ -167,7 +167,9 @@ def build_agent(rebuild_index: bool = False):
     web = SerpAPIWrapper()
 
     def nodo_agente(state: AgentState):
-        prompt = f"""Eres un clasificador. Decide si la pregunta debe responderse con documentos locales (RAG) o con web.
+        prompt = f"""Eres un clasificador para la agencia de viajes Carrarurquia. Decide si la pregunta debe responderse con documentos locales (RAG) o con la web.
+- Usa 'RAG' para preguntas sobre la agencia, soporte, contactos, itinerarios, políticas o cualquier duda relacionada con Carrarurquia.
+- Usa 'Web' solo para buscar información externa o en tiempo real (ej. clima actual o noticias).
 Responde SOLO con 'RAG' o 'Web'.
 
 Pregunta: {state['pregunta']}
@@ -187,8 +189,8 @@ Pregunta: {state['pregunta']}
 
     def nodo_markdown(state: AgentState):
         prompt = f"""Eres un asistente experto de una agencia de viajes en Turquía.
-Responde en español y en formato Markdown.
-Incluye: título (#), subtítulos (##), listas y recomendaciones claras.
+Responde en español, de forma muy resumida, directa y objetiva.
+Ve al grano para minimizar los tokens generados. Usa formato Markdown con viñetas cortas solo si es indispensable.
 
 Fuente: {state['fuente']}
 Contexto:
